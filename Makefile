@@ -18,7 +18,7 @@ new:
 
 build:
 	@test -n "$(FILE)" || (echo "Usage: make build FILE=abc/abc400/a"; exit 1)
-	$(CXX) $(CXXFLAGS) -o $(FILE) $(FILE).cpp
+	@$(CXX) $(CXXFLAGS) -o $(FILE) $(FILE).cpp
 
 run: build
-	./$(FILE); rm -f $(FILE)
+	@./$(FILE); rm -f $(FILE)
