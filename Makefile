@@ -21,4 +21,4 @@ build:
 	$(CXX) $(CXXFLAGS) -o $(FILE) $(FILE).cpp
 
 run: build
-	./$(FILE)
+	./$(FILE); rm -f $(FILE)
