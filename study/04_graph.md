@@ -1,0 +1,302 @@
+# 第4章：グラフアルゴリズム
+
+---
+
+## 4-1. グラフの基礎
+
+グラフは「頂点（ノード）」と「辺（エッジ）」からなるデータ構造。
+
+```
+頂点: 0, 1, 2, 3, 4
+辺: 0-1, 0-2, 1-3, 2-3, 3-4
+```
+
+### グラフの種類
+
+- **無向グラフ**：辺に向きがない（両方向に行ける）
+- **有向グラフ**：辺に向きがある（一方向のみ）
+- **重み付きグラフ**：辺にコスト（距離）がある
+
+### 隣接リストによる実装
+
+競プロでは隣接リストが基本。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, m; // 頂点数, 辺数
+    cin >> n >> m;
+    vector<vector<int>> graph(n); // graph[v] = vに隣接する頂点のリスト
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--; // 1-indexed → 0-indexed
+        graph[u].push_back(v);
+        graph[v].push_back(u); // 無向グラフの場合は両方向に追加
+    }
+}
+```
+
+重み付きグラフの場合：
+
+```cpp
+vector<vector<pair<int,int>>> graph(n); // graph[v] = {隣接頂点, 辺の重み}
+graph[u].push_back({v, w});
+graph[v].push_back({u, w});
+```
+
+---
+
+## 4-2. BFS（幅優先探索）
+
+### 用途
+
+- 最短経路（辺のコストがすべて等しいとき）
+- 到達可能な頂点を探す
+- 最短手数を求める
+
+### 仕組み
+
+始点から近い順に頂点を訪問する。queue を使う。
+
+```
+始点 0 → 距離1の頂点 → 距離2の頂点 → ...
+```
+
+### 実装
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> graph(n);
+    for (int i = 0; i < m; i++) {
+        int u, v; cin >> u >> v; u--; v--;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    int start = 0;
+    vector<int> dist(n, -1); // -1 = 未訪問
+    queue<int> q;
+
+    dist[start] = 0;
+    q.push(start);
+
+    while (!q.empty()) {
+        int v = q.front(); q.pop();
+        for (int next : graph[v]) {
+            if (dist[next] == -1) { // 未訪問なら
+                dist[next] = dist[v] + 1;
+                q.push(next);
+            }
+        }
+    }
+
+    // dist[v] = 頂点 v への最短距離（到達不能なら -1）
+    for (int i = 0; i < n; i++) cout << dist[i] << " ";
+}
+```
+
+### 2次元グリッドでの BFS（頻出）
+
+```cpp
+// H×W のグリッド、'.' は通行可、'#' は壁
+// (sr, sc) から (gr, gc) への最短距離
+
+int dx[] = {0, 0, 1, -1};
+int dy[] = {1, -1, 0, 0};
+
+vector<vector<int>> dist(H, vector<int>(W, -1));
+queue<pair<int,int>> q;
+dist[sr][sc] = 0;
+q.push({sr, sc});
+
+while (!q.empty()) {
+    auto [r, c] = q.front(); q.pop();
+    for (int d = 0; d < 4; d++) {
+        int nr = r + dx[d], nc = c + dy[d];
+        if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue; // 範囲外
+        if (grid[nr][nc] == '#') continue;                      // 壁
+        if (dist[nr][nc] != -1) continue;                       // 訪問済み
+        dist[nr][nc] = dist[r][c] + 1;
+        q.push({nr, nc});
+    }
+}
+```
+
+---
+
+## 4-3. DFS（深さ優先探索）
+
+### 用途
+
+- 連結成分の数を数える
+- 木の探索
+- トポロジカルソート
+- 到達可能な頂点を列挙
+
+### 実装（再帰）
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+
+void dfs(int v) {
+    visited[v] = true;
+    for (int next : graph[v]) {
+        if (!visited[next]) {
+            dfs(next);
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    graph.resize(n);
+    visited.assign(n, false);
+    for (int i = 0; i < m; i++) {
+        int u, v; cin >> u >> v; u--; v--;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    // 連結成分の数を数える
+    int components = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs(i);
+            components++;
+        }
+    }
+    cout << components << endl;
+}
+```
+
+**注意**：N が大きいと再帰の深さ制限でスタックオーバーフローになることがある。  
+その場合は stack を使った反復 DFS に書き換える。
+
+---
+
+## 4-4. Dijkstra（ダイクストラ法）
+
+### 用途
+
+重み付きグラフでの**単一始点最短路**。  
+辺の重みが非負のときのみ使える。
+
+### 仕組み
+
+priority_queue（最小ヒープ）を使い、現在の最短距離が小さい頂点から順に確定していく。
+
+```
+{距離, 頂点} の最小ヒープを使う
+```
+
+### 実装
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+const ll INF = 1e18;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pair<int,int>>> graph(n); // {隣接頂点, 重み}
+    for (int i = 0; i < m; i++) {
+        int u, v, w; cin >> u >> v >> w; u--; v--;
+        graph[u].push_back({v, w});
+        graph[v].push_back({u, w}); // 無向グラフの場合
+    }
+
+    int start = 0;
+    vector<ll> dist(n, INF);
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<>> pq;
+
+    dist[start] = 0;
+    pq.push({0, start}); // {距離, 頂点}
+
+    while (!pq.empty()) {
+        auto [d, v] = pq.top(); pq.pop();
+        if (d > dist[v]) continue; // すでに更新済みならスキップ
+        for (auto [next, w] : graph[v]) {
+            if (dist[v] + w < dist[next]) {
+                dist[next] = dist[v] + w;
+                pq.push({dist[next], next});
+            }
+        }
+    }
+
+    // dist[v] = 始点から v への最短距離（到達不能なら INF）
+    for (int i = 0; i < n; i++) {
+        if (dist[i] == INF) cout << -1 << "\n";
+        else cout << dist[i] << "\n";
+    }
+}
+```
+
+| アルゴリズム | 計算量 | 用途 |
+| --- | --- | --- |
+| BFS | $O(V + E)$ | 辺の重みが全部同じ |
+| Dijkstra | $O((V + E) \log V)$ | 辺の重みが非負 |
+| DFS | $O(V + E)$ | 連結成分、木の探索 |
+
+---
+
+## 4-5. Union-Find（素集合データ構造）
+
+### 用途
+
+- 「2つの頂点が同じ連結成分か？」を高速に判定
+- グラフに辺を追加しながら連結性を管理
+
+```cpp
+struct UnionFind {
+    vector<int> parent, rank;
+    UnionFind(int n) : parent(n), rank(n, 0) {
+        iota(parent.begin(), parent.end(), 0); // parent[i] = i
+    }
+    int find(int x) {
+        if (parent[x] == x) return x;
+        return parent[x] = find(parent[x]); // 経路圧縮
+    }
+    void unite(int x, int y) {
+        x = find(x); y = find(y);
+        if (x == y) return;
+        if (rank[x] < rank[y]) swap(x, y);
+        parent[y] = x;
+        if (rank[x] == rank[y]) rank[x]++;
+    }
+    bool same(int x, int y) { return find(x) == find(y); }
+};
+
+// 使い方
+UnionFind uf(n);
+uf.unite(0, 1);       // 0 と 1 をつなげる
+uf.same(0, 1);        // true
+uf.same(0, 2);        // false（まだつながっていない）
+```
+
+---
+
+## 練習問題
+
+| 問題 | テーマ | 難易度 |
+| --- | --- | --- |
+| [ABC007C - 幅優先探索](https://atcoder.jp/contests/abc007/tasks/abc007_3) | BFS の基本 | ★★☆ |
+| [ABC088D - Grid](https://atcoder.jp/contests/abc088/tasks/abc088_d) | BFS（グリッド） | ★★☆ |
+| [ABC049D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b) | Union-Find | ★★★ |
+| [ABC191E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e) | Dijkstra | ★★★ |
+| [ABC196D - Hanjo](https://atcoder.jp/contests/abc196/tasks/abc196_d) | DFS / 全探索 | ★★★ |
