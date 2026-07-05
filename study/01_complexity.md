@@ -41,9 +41,23 @@ $$O(1) < O(\log N) < O(N) < O(N \log N) < O(N^2) < O(2^N)$$
 #include <bits/stdc++.h>
 using namespace std;
 
+using ll = long long;
+using ull = unsigned long long;
+using pll = pair<ll, ll>;
+using vl = vector<ll>;
+using vvl = vector<vector<ll>>;
+
+#define rep(i, n) for (ll i = 0; i < (ll)(n); i++)
+#define rep2(i, a, b) for (ll i = (ll)(a); i < (ll)(b); i++)
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+
+const ll INF = 1e18;
+const ll MOD = 1e9 + 7;
+
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
     // ここに解法を書く
 
@@ -52,7 +66,7 @@ int main() {
 ```
 
 - `#include <bits/stdc++.h>` : 全ヘッダをまとめてインクルード
-- `ios_base::sync_with_stdio(false); cin.tie(NULL);` : 入出力を高速化（大量入力時に必須）
+- `ios::sync_with_stdio(false); cin.tie(nullptr);` : 入出力を高速化（大量入力時に必須）
 
 ---
 
@@ -61,29 +75,26 @@ int main() {
 配列の代わりに使う。サイズが可変で便利。
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
 int main() {
     // 宣言
-    vector<int> a = {3, 1, 4, 1, 5};
-    vector<int> b(5, 0);    // 長さ5、全要素0
-    vector<int> c(5);       // 長さ5（値は不定）
+    vl a = {3, 1, 4, 1, 5};  // vector<ll> の別名
+    vl b(5, 0);               // 長さ5、全要素0
+    vl c(5);                  // 長さ5（値は不定）
 
     // 要素アクセス
-    cout << a[0] << endl;   // 3
-    a.push_back(9);         // 末尾に追加
+    cout << a[0] << endl;     // 3
+    a.push_back(9);           // 末尾に追加
     cout << a.size() << endl; // 6
 
-    // 範囲 for
-    for (int x : a) {
-        cout << x << " ";
+    // rep マクロ（0-indexed で n 回ループ）
+    rep(i, a.size()) {
+        cout << a[i] << " ";
     }
     cout << endl;
 
-    // インデックス付き for
-    for (int i = 0; i < (int)a.size(); i++) {
-        cout << a[i] << " ";
+    // rep2 マクロ（a 以上 b 未満）
+    rep2(i, 1, 4) {
+        cout << a[i] << " "; // 1 4 1
     }
     cout << endl;
 
@@ -91,32 +102,30 @@ int main() {
 }
 ```
 
-**注意**：`a.size()` は `unsigned` 型なので、`int` とループ比較するときは `(int)a.size()` とキャストする。
+**`rep` の内部**：`for (ll i = 0; i < (ll)(n); i++)` に展開される。
+`ll` で回すので `(int)a.size()` のキャストは不要。
 
 ---
 
 ## 1-4. sort
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
 int main() {
-    vector<int> a = {3, 1, 4, 1, 5, 9, 2, 6};
+    vl a = {3, 1, 4, 1, 5, 9, 2, 6};
 
-    // 昇順ソート
-    sort(a.begin(), a.end());
+    // 昇順ソート（all マクロで begin/end を省略）
+    sort(all(a));
     // a = {1, 1, 2, 3, 4, 5, 6, 9}
 
-    // 降順ソート
-    sort(a.begin(), a.end(), greater<int>());
+    // 降順ソート（rall マクロ）
+    sort(rall(a));
     // a = {9, 6, 5, 4, 3, 2, 1, 1}
 
     return 0;
 }
 ```
 
-`sort` の計算量は **O(N log N)**。
+`sort` の計算量は $O(N \log N)$。
 
 ---
 
@@ -125,21 +134,18 @@ int main() {
 複数の値をまとめて扱うときに使う。
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
 int main() {
-    // pair
-    pair<int, int> p = {3, 5};
+    // pll は pair<ll, ll> の別名
+    pll p = {3, 5};
     cout << p.first << " " << p.second << endl; // 3 5
 
     // pair のソート（first が優先、同じなら second）
-    vector<pair<int, int>> v = {{3, 2}, {1, 5}, {3, 1}};
-    sort(v.begin(), v.end());
+    vector<pll> v = {{3, 2}, {1, 5}, {3, 1}};
+    sort(all(v));
     // {{1,5}, {3,1}, {3,2}}
 
     // tuple（3つ以上）
-    tuple<int, int, int> t = {1, 2, 3};
+    tuple<ll, ll, ll> t = {1, 2, 3};
     cout << get<0>(t) << endl; // 1
 
     return 0;
@@ -151,9 +157,6 @@ int main() {
 ## 1-6. string
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
 int main() {
     string s = "hello";
     cout << s.size() << endl;   // 5
@@ -174,27 +177,37 @@ int main() {
 
 ---
 
-## 1-7. 型エイリアスとよく使うマクロ
+## 1-7. 型エイリアスとマクロの一覧
+
+テンプレートで定義済みの省略記法をまとめます。
+
+### 型エイリアス
+
+| 別名 | 実際の型 | 用途 |
+| --- | --- | --- |
+| `ll` | `long long` | 大きな整数 |
+| `ull` | `unsigned long long` | 符号なし大整数 |
+| `pll` | `pair<ll, ll>` | 2値のペア |
+| `vl` | `vector<ll>` | 1次元配列 |
+| `vvl` | `vector<vector<ll>>` | 2次元配列 |
+
+### マクロ
+
+| マクロ | 展開後 | 使い方 |
+| --- | --- | --- |
+| `rep(i, n)` | `for (ll i = 0; i < n; i++)` | 0〜n-1 のループ |
+| `rep2(i, a, b)` | `for (ll i = a; i < b; i++)` | a〜b-1 のループ |
+| `all(v)` | `v.begin(), v.end()` | sort などに渡す |
+| `rall(v)` | `v.rbegin(), v.rend()` | 逆順 sort に渡す |
+
+### 定数
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-// long long を ll と書けるようにする
-using ll = long long;
-
-// よく使う定数
-const ll INF = 1e18;   // 無限大（long long の最大値より小さい）
-const int MOD = 1e9 + 7;
-
-int main() {
-    ll a = 1e18;  // 10^18
-    // int の最大値は約 2×10^9 → N×N を計算するなら ll が必要
-    return 0;
-}
+const ll INF = 1e18;    // 到達不能・未初期化の印（ll の最大値より小さい）
+const ll MOD = 1e9 + 7; // 余りを取る問題で使う素数
 ```
 
-**`int` か `ll` か**：$N \leq 10^5$ で $N^2$ を計算すると $10^{10}$ → `int` だとオーバーフロー → `ll` を使う。
+**`int` か `ll` か**：$N \leq 10^5$ で $N^2$ を計算すると $10^{10}$ → `int`（最大 $\approx 2 \times 10^9$）ではオーバーフロー → `ll` を使う。
 
 ---
 
@@ -202,9 +215,9 @@ int main() {
 
 | 操作 | 計算量 | コード |
 | --- | --- | --- |
-| vector アクセス | O(1) | `a[i]` |
-| vector 末尾追加 | O(1) | `a.push_back(x)` |
-| sort | O(N log N) | `sort(a.begin(), a.end())` |
+| vector アクセス | $O(1)$ | `a[i]` |
+| vector 末尾追加 | $O(1)$ | `a.push_back(x)` |
+| sort | $O(N \log N)$ | `sort(all(a))` |
 
 ---
 
