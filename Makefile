@@ -1,5 +1,5 @@
 CXX      = g++-16
-CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+CXXFLAGS = -std=c++23 -O2 -Wall -Wextra
 PROBLEMS = a b c d e f g
 
 .PHONY: help new build run
