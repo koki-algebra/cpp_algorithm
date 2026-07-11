@@ -13,11 +13,13 @@
 | 章 | テーマ | 難易度の目安 |
 | --- | --- | --- |
 | [1. 計算量と STL 基礎](01_complexity.md) | Big O 記法、vector、sort、pair | A〜B の基礎固め |
-| [2. 累積和・二分探索・しゃくとり法](02_prefix_binary_twoptr.md) | 前処理で高速化する発想 | C〜D |
-| [3. データ構造](03_data_structures.md) | Stack / Queue / Heap / Set / Map | C〜D |
-| [4. グラフアルゴリズム](04_graph.md) | BFS / DFS / Dijkstra | D |
-| [5. 動的計画法（DP）](05_dp.md) | 1D DP / ナップサック / 典型パターン | D |
-| [6. 数学](06_math.md) | mod / GCD / 素数 / 組み合わせ | C〜D |
+| [2. 全探索](02_brute_force.md) | ループ・ビット・順列の全列挙 | B〜C |
+| [3. 貪欲法](03_greedy.md) | ソート＋貪欲選択、区間スケジューリング | C〜D |
+| [4. 累積和・二分探索・しゃくとり法](04_prefix_binary_twoptr.md) | 前処理で高速化する発想 | C〜D |
+| [5. データ構造](05_data_structures.md) | Stack / Queue / Heap / Set / Map | C〜D |
+| [6. グラフアルゴリズム](06_graph.md) | BFS / DFS / Dijkstra / Union-Find | D |
+| [7. 動的計画法（DP）](07_dp.md) | 1D DP / ナップサック / 典型パターン | D |
+| [8. 数学](08_math.md) | mod / GCD / 素数 / 組み合わせ | C〜D |
 
 ## D問題に頻出のテーマ（出現頻度順）
 
@@ -26,4 +28,5 @@
 3. データ構造（Heap, Set）
 4. 二分探索
 5. 累積和
-6. 数学（mod, 組み合わせ）
+6. 貪欲法
+7. 数学（mod, 組み合わせ）

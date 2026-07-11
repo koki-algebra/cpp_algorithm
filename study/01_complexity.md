@@ -230,4 +230,3 @@ const ll MOD = 1e9 + 7; // 余りを取る問題で使う素数
 | [ABC086A - Product](https://atcoder.jp/contests/abc086/tasks/abc086_a) | 基本操作 | ★☆☆ |
 | [ABC081B - Shift only](https://atcoder.jp/contests/abc081/tasks/abc081_b) | ループ | ★☆☆ |
 | [ABC088B - Grid](https://atcoder.jp/contests/abc088/tasks/abc088_b) | sort + 判定 | ★★☆ |
-| [ABC128C - Switches](https://atcoder.jp/contests/abc128/tasks/abc128_c) | 全探索 + sort | ★★☆ |
