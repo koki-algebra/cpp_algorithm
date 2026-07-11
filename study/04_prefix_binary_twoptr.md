@@ -33,11 +33,11 @@ int main() {
     int n;
     cin >> n;
     vector<ll> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
+    rep(i, n) cin >> a[i];
 
     // 累積和の構築
     vector<ll> S(n + 1, 0);
-    for (int i = 0; i < n; i++) {
+    rep(i, n) {
         S[i + 1] = S[i] + a[i];
     }
 
@@ -58,8 +58,8 @@ int main() {
 vector<vector<ll>> S(H + 1, vector<ll>(W + 1, 0));
 
 // 構築
-for (int i = 0; i < H; i++)
-    for (int j = 0; j < W; j++)
+rep(i, H)
+    rep(j, W)
         S[i+1][j+1] = S[i][j+1] + S[i+1][j] - S[i][j] + a[i][j];
 
 // 矩形 (r1,c1)〜(r2,c2) の合計（0-indexed）
@@ -86,16 +86,16 @@ int main() {
     //               0  1  2  3  4  5  6
 
     // lower_bound: x 以上の最初の位置
-    auto it = lower_bound(a.begin(), a.end(), 4);
+    auto it = lower_bound(all(a), 4);
     cout << (it - a.begin()) << endl; // 2
 
     // upper_bound: x より大きい最初の位置
-    auto it2 = upper_bound(a.begin(), a.end(), 4);
+    auto it2 = upper_bound(all(a), 4);
     cout << (it2 - a.begin()) << endl; // 4
 
     // x が含まれる個数 = upper_bound - lower_bound
-    int cnt = upper_bound(a.begin(), a.end(), 4)
-            - lower_bound(a.begin(), a.end(), 4);
+    int cnt = upper_bound(all(a), 4)
+            - lower_bound(all(a), 4);
     cout << cnt << endl; // 2
 }
 ```
@@ -145,7 +145,7 @@ K 人でそれぞれ連続した区間を担当。各人の仕事量の最大値
 auto check = [&](ll mid) -> bool {
     int people = 1;
     ll cur = 0;
-    for (int i = 0; i < n; i++) {
+    rep(i, n) {
         if (cur + a[i] > mid) { people++; cur = 0; }
         cur += a[i];
     }
@@ -173,7 +173,7 @@ auto check = [&](ll mid) -> bool {
 int l = 0;
 ll sum = 0;
 int ans = 0;
-for (int r = 0; r < n; r++) {
+rep(r, n) {
     sum += a[r];              // r を右に伸ばす
     while (sum > K) {
         sum -= a[l];          // 条件を破ったら l を縮める
@@ -194,7 +194,7 @@ for (int r = 0; r < n; r++) {
 int l = 0;
 ll sum = 0;
 int ans = INT_MAX;
-for (int r = 0; r < n; r++) {
+rep(r, n) {
     sum += a[r];
     while (sum >= K) {
         ans = min(ans, r - l + 1);

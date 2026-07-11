@@ -202,7 +202,7 @@ long long power(long long base, long long exp, long long mod) {
 
 void precompute() {
     fact[0] = 1;
-    for (int i = 1; i < MAXN; i++) fact[i] = fact[i-1] * i % MOD;
+    rep2(i, 1, MAXN) fact[i] = fact[i-1] * i % MOD;
     inv_fact[MAXN-1] = power(fact[MAXN-1], MOD - 2, MOD);
     for (int i = MAXN-2; i >= 0; i--) inv_fact[i] = inv_fact[i+1] * (i+1) % MOD;
 }
@@ -235,7 +235,7 @@ vector<int> divisors(int n) {
             if (i != n / i) divs.push_back(n / i);
         }
     }
-    sort(divs.begin(), divs.end());
+    sort(all(divs));
     return divs;
 }
 ```
@@ -253,8 +253,8 @@ vector<int> divisors(int n) {
 
 ```cpp
 // N 以下の整数をビット全探索（2^N 通り）
-for (int bit = 0; bit < (1 << n); bit++) {
-    for (int i = 0; i < n; i++) {
+rep(bit, 1 << n) {
+    rep(i, n) {
         if ((bit >> i) & 1) {
             // i 番目の要素を選ぶ
         }

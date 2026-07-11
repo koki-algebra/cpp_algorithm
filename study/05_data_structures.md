@@ -113,7 +113,7 @@ int main() {
 ```cpp
 // N 個の要素から K 番目に小さいものを求める
 priority_queue<int> pq; // 最大ヒープをサイズ K で維持
-for (int i = 0; i < n; i++) {
+rep(i, n) {
     pq.push(a[i]);
     if ((int)pq.size() > k) pq.pop(); // K+1 番目に大きいものを除去
 }

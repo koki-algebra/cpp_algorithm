@@ -30,7 +30,7 @@ int main() {
     cin >> n >> m;
     vector<vector<int>> graph(n); // graph[v] = vに隣接する頂点のリスト
 
-    for (int i = 0; i < m; i++) {
+    rep(i, m) {
         int u, v;
         cin >> u >> v;
         u--; v--; // 1-indexed → 0-indexed
@@ -76,7 +76,7 @@ int main() {
     int n, m;
     cin >> n >> m;
     vector<vector<int>> graph(n);
-    for (int i = 0; i < m; i++) {
+    rep(i, m) {
         int u, v; cin >> u >> v; u--; v--;
         graph[u].push_back(v);
         graph[v].push_back(u);
@@ -100,7 +100,7 @@ int main() {
     }
 
     // dist[v] = 頂点 v への最短距離（到達不能なら -1）
-    for (int i = 0; i < n; i++) cout << dist[i] << " ";
+    rep(i, n) cout << dist[i] << " ";
 }
 ```
 
@@ -120,7 +120,7 @@ q.push({sr, sc});
 
 while (!q.empty()) {
     auto [r, c] = q.front(); q.pop();
-    for (int d = 0; d < 4; d++) {
+    rep(d, 4) {
         int nr = r + dx[d], nc = c + dy[d];
         if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue; // 範囲外
         if (grid[nr][nc] == '#') continue;                      // 壁
@@ -165,7 +165,7 @@ int main() {
     cin >> n >> m;
     graph.resize(n);
     visited.assign(n, false);
-    for (int i = 0; i < m; i++) {
+    rep(i, m) {
         int u, v; cin >> u >> v; u--; v--;
         graph[u].push_back(v);
         graph[v].push_back(u);
@@ -173,7 +173,7 @@ int main() {
 
     // 連結成分の数を数える
     int components = 0;
-    for (int i = 0; i < n; i++) {
+    rep(i, n) {
         if (!visited[i]) {
             dfs(i);
             components++;
@@ -215,7 +215,7 @@ int main() {
     int n, m;
     cin >> n >> m;
     vector<vector<pair<int,int>>> graph(n); // {隣接頂点, 重み}
-    for (int i = 0; i < m; i++) {
+    rep(i, m) {
         int u, v, w; cin >> u >> v >> w; u--; v--;
         graph[u].push_back({v, w});
         graph[v].push_back({u, w}); // 無向グラフの場合
@@ -240,7 +240,7 @@ int main() {
     }
 
     // dist[v] = 始点から v への最短距離（到達不能なら INF）
-    for (int i = 0; i < n; i++) {
+    rep(i, n) {
         if (dist[i] == INF) cout << -1 << "\n";
         else cout << dist[i] << "\n";
     }
@@ -266,7 +266,7 @@ int main() {
 struct UnionFind {
     vector<int> parent, rank;
     UnionFind(int n) : parent(n), rank(n, 0) {
-        iota(parent.begin(), parent.end(), 0); // parent[i] = i
+        iota(all(parent), 0); // parent[i] = i
     }
     int find(int x) {
         if (parent[x] == x) return x;
