@@ -19,19 +19,20 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    vl t(1000, 0);
-    rep2(i, 1, 1000) { t[i] += t[i - 1] + i; }
+    // 西: 1 + ... + n とすると
+    // 東: 1 + ... + n + (n+1) となる.
+    // a = 1 + ... + n - x
+    // b = 1 + ... + n + (n+1) - x
+    // b - a = n + 1
+    // n = b - a - 1
+    // x = 1 + ... + n - a = (1 + n) * n / 2 - a
 
     ll a, b;
     cin >> a >> b;
 
-    ll diff = b - a;
-    rep2(i, 2, 1000) {
-        if (i == diff) {
-            cout << t[i - 1] - a << "\n";
-            return 0;
-        }
-    }
+    ll n = b - a - 1;
+    ll ans = (1 + n) * n / 2 - a;
+    cout << ans << "\n";
 
     return 0;
 }
