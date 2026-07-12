@@ -21,7 +21,7 @@ int main() {
 
     ll l, q;
     cin >> l >> q;
-    set<ll> s; // 切れ目の集合
+    set<ll> s = {0, l};  // 切れ目の集合
     rep(i, q) {
         int c;
         ll x;
@@ -29,16 +29,8 @@ int main() {
         if (c == 1) {
             s.insert(x);
         } else {
-            ll a = 0;
-            ll b = l;
-            auto ub = s.upper_bound(x);
-            if (ub != s.end()) {
-                b = *ub; // x より大きな最小の切れ目
-            }
-            auto lb = s.lower_bound(x);
-            if (lb != s.begin()) {
-                a = *prev(lb); // x より小さな最大の切れ目
-            }
+            ll b = *s.upper_bound(x);        // x より大きな最小の切れ目
+            ll a = *prev(s.lower_bound(x));  // x より小さな最大の切れ目
             cout << b - a << "\n";
         }
     }
