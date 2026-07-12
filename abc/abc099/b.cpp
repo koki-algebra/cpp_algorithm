@@ -19,7 +19,19 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    vl t(1000, 0);
+    rep2(i, 1, 1000) { t[i] += t[i - 1] + i; }
 
+    ll a, b;
+    cin >> a >> b;
+
+    ll diff = b - a;
+    rep2(i, 2, 1000) {
+        if (i == diff) {
+            cout << t[i - 1] - a << "\n";
+            return 0;
+        }
+    }
 
     return 0;
 }
