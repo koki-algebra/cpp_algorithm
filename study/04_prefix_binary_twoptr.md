@@ -285,7 +285,6 @@ rep(r, n) {
 
 | 問題 | テーマ | 難易度 |
 | --- | --- | --- |
-| [ABC125B - Resale](https://atcoder.jp/contests/abc125/tasks/abc125_b) | 累積和の考え方 | ★☆☆ |
 | [ABC130D - Enough Array](https://atcoder.jp/contests/abc130/tasks/abc130_d) | 累積和 + 二分探索 | ★★☆ |
 | [ABC143C - Slimes](https://atcoder.jp/contests/abc143/tasks/abc143_c) | しゃくとり法 | ★★☆ |
 | [ABC174C - Rounding](https://atcoder.jp/contests/abc174/tasks/abc174_c) | 二分探索の考え方 | ★★☆ |
