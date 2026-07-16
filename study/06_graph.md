@@ -106,30 +106,42 @@ int main() {
 
 ### 2次元グリッドでの BFS（頻出）
 
-```cpp
-// H×W のグリッド、'.' は通行可、'#' は壁
-// (sr, sc) から (gr, gc) への最短距離
+座標 `(r, c)` は
 
+```cpp
+int idx = r * W + c;   // 一次元化
+int r = idx / W, c = idx % W; // 復元
+```
+
+という式で 1 つの `int` に変換できる。`vector<vector<int>>` や `queue<pair<int,int>>` ではなく `vector<int>` / `queue<int>` 一本で持てるためメモリが連続しキャッシュ効率が良く、`pair` の生成・比較コストも消えるので大きいグリッドでは高速化につながる。
+
+```cpp
 int dx[] = {0, 0, 1, -1};
 int dy[] = {1, -1, 0, 0};
 
-vector<vector<int>> dist(H, vector<int>(W, -1));
-queue<pair<int,int>> q;
-dist[sr][sc] = 0;
-q.push({sr, sc});
+auto encode = [&](int r, int c) { return r * W + c; };
+
+vector<int> dist(H * W, -1);
+queue<int> q;
+dist[encode(sr, sc)] = 0;
+q.push(encode(sr, sc));
 
 while (!q.empty()) {
-    auto [r, c] = q.front(); q.pop();
+    int cur = q.front(); q.pop();
+    int r = cur / W, c = cur % W;
     rep(d, 4) {
         int nr = r + dx[d], nc = c + dy[d];
         if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue; // 範囲外
         if (grid[nr][nc] == '#') continue;                      // 壁
-        if (dist[nr][nc] != -1) continue;                       // 訪問済み
-        dist[nr][nc] = dist[r][c] + 1;
-        q.push({nr, nc});
+        int nidx = encode(nr, nc);
+        if (dist[nidx] != -1) continue;                         // 訪問済み
+        dist[nidx] = dist[cur] + 1;
+        q.push(nidx);
     }
 }
 ```
+
+**注意**：`W` の値は探索中に変えないこと。3次元以上のグリッドでも `idx = (r * H2 + c) * H3 + k` のように掛け算をネストさせれば同様に一次元化できる。
 
 ---
 
