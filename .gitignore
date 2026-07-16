@@ -3,3 +3,4 @@ abc/**/[a-g]
 *.dSYM/
 tmp/
 .obsidian
+.claude/settings.local.json
