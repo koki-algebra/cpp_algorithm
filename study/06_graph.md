@@ -307,7 +307,7 @@ uf.same(0, 2);        // false（まだつながっていない）
 
 | 問題 | テーマ | 難易度 |
 | --- | --- | --- |
-| [ABC007C - 幅優先探索](https://atcoder.jp/contests/abc007/tasks/abc007_3) | BFS の基本 | ★★☆ |
+| [ABC007C - 幅優先探索](https://atcoder.jp/contests/abc007/tasks/abc007_3) | BFS（グリッド・基本） | ★★☆ |
 | [ABC088D - Grid](https://atcoder.jp/contests/abc088/tasks/abc088_d) | BFS（グリッド） | ★★☆ |
 | [ABC049D - 連結](https://atcoder.jp/contests/abc049/tasks/arc065_b) | Union-Find | ★★★ |
 | [ABC191E - Come Back Quickly](https://atcoder.jp/contests/abc191/tasks/abc191_e) | Dijkstra | ★★★ |
