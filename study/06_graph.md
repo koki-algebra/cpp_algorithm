@@ -154,6 +154,27 @@ while (!q.empty()) {
 - トポロジカルソート
 - 到達可能な頂点を列挙
 
+### 仕組み
+
+BFS が「近い順」に広がっていくのに対し、DFS は「1本の道を行き止まりまで進み、行き止まったら1つ前の分岐まで戻ってまた進む」という探索をする。
+
+```
+      0
+    /   \
+   1     2
+   |     |
+   3-----+
+
+訪問順（0から）: 0 → 1 → 3 → 2 （3から2へは3-2の辺があれば進み、なければ0まで戻ってから2へ）
+```
+
+この「戻る」動作は **スタック（LIFO：後入れ先出し）** の性質そのもの。実装方法は2通りあり、どちらも考え方は同じ。
+
+| 実装 | 使うスタック | 特徴 |
+| --- | --- | --- |
+| 再帰 | 関数呼び出しスタック（暗黙的） | コードが短く読みやすい。N が大きいとスタックオーバーフローの恐れ |
+| 非再帰（明示的な stack） | `stack<int>`（自分で管理） | オーバーフローしない。訪問順が再帰版と前後することがある |
+
 ### 実装（再帰）
 
 ```cpp
@@ -195,8 +216,61 @@ int main() {
 }
 ```
 
-**注意**：N が大きいと再帰の深さ制限でスタックオーバーフローになることがある。  
-その場合は stack を使った反復 DFS に書き換える。
+### 実装（非再帰・stack）
+
+再帰と同じ探索を、明示的な `stack<int>` を使って書き換えたもの。関数呼び出しを使わないためスタックオーバーフローが起きない。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> graph;
+vector<bool> visited;
+
+void dfs_iterative(int start) {
+    stack<int> st;
+    st.push(start);
+    visited[start] = true; // push する時点でマークする（同じ頂点の二重pushを防ぐ）
+
+    while (!st.empty()) {
+        int v = st.top(); st.pop();
+        for (int next : graph[v]) {
+            if (!visited[next]) {
+                visited[next] = true;
+                st.push(next);
+            }
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    graph.resize(n);
+    visited.assign(n, false);
+    rep(i, m) {
+        int u, v; cin >> u >> v; u--; v--;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    // 連結成分の数を数える
+    int components = 0;
+    rep(i, n) {
+        if (!visited[i]) {
+            dfs_iterative(i);
+            components++;
+        }
+    }
+    cout << components << endl;
+}
+```
+
+**注意**：
+
+- `visited` は「pop した時」ではなく「push した時」にマークする。pop 時にマークすると、同じ頂点が処理前にスタックへ複数回積まれてしまい、無駄な処理や意図しない重複カウントにつながる。
+- `stack` は LIFO なので、`graph[v]` に積んだ順と実際に訪れる順は逆になる。そのため訪問順そのものが再帰版と一致するとは限らない（連結成分数のように「順序に依存しない結果」を求める分には問題ない）。
+- 再帰の深さが数十万を超えるような入力（一直線に伸びたグラフなど）では再帰版がスタックオーバーフローを起こしうる。そのようなケースでは非再帰版を使う。
 
 ---
 
