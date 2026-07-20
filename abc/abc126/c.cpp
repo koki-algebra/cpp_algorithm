@@ -19,7 +19,20 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll n, k;
+    cin >> n >> k;
 
+    double ans = 0.0;
+    rep2(i, 1, n + 1) {
+        ll j = 0;
+        ll v = i;
+        while (v < k) {
+            v *= 2;
+            j++;
+        }
+        ans += 1.0 / double(n) * pow(0.5, j);
+    }
+    cout << fixed << setprecision(12) << ans << "\n";
 
     return 0;
 }
