@@ -31,19 +31,22 @@ int main() {
     }
 
     vl ans(n, 0);
-    stack<tuple<ll, ll, ll>> st;
-    st.push(make_tuple(0, -1, 1));
+    vector<bool> visited(n, false);
+    stack<pll> st;
+    st.push(make_pair(0, 1));
     while (!st.empty()) {
-        auto [v, p, c] = st.top();
+        auto [v, c] = st.top();
         st.pop();
+        if (visited[v]) continue;
+        visited[v] = true;
         ans[v] = c;
 
         for (auto e : graph[v]) {
-            if (e.first == p) continue;
+            if (visited[e.first]) continue;
             if (e.second & 1) {
-                st.push(make_tuple(e.first, v, 1-c));
+                st.push(make_pair(e.first, 1 - c));
             } else {
-                st.push(make_tuple(e.first, v, c));
+                st.push(make_pair(e.first, c));
             }
         }
     }
