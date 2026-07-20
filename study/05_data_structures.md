@@ -104,9 +104,9 @@ int main() {
 
 | 操作 | 計算量 |
 | --- | --- |
-| push | O(log N) |
-| top | O(1) |
-| pop | O(log N) |
+| push | $O(\log N)$ |
+| top | $O(1)$ |
+| pop | $O(\log N)$ |
 
 ### 典型：K 番目に小さい値を取り出す
 
@@ -125,7 +125,7 @@ cout << pq.top() << endl; // K 番目に小さい値
 ## 3-4. Set（集合）
 
 重複なし・ソート済みの集合。  
-「含まれているか？」「最小値は？」を O(log N) で確認できる。
+「含まれているか？」「最小値は？」を $O(\log N)$ で確認できる。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -156,10 +156,10 @@ int main() {
 
 | 操作 | 計算量 |
 | --- | --- |
-| insert | O(log N) |
-| count / find | O(log N) |
-| erase | O(log N) |
-| begin / rbegin | O(1) |
+| insert | $O(\log N)$ |
+| count / find | $O(\log N)$ |
+| erase | $O(\log N)$ |
+| begin / rbegin | $O(1)$ |
 
 **重複を許す場合は `multiset<int>` を使う。**
 
@@ -192,8 +192,8 @@ int main() {
 }
 ```
 
-**高速版**：順序不要なら `unordered_map` を使うと O(1) 平均になる。  
-ただし最悪 O(N) になる場合があるため、ハック対策が必要な場合は要注意。
+**高速版**：順序不要なら `unordered_map` を使うと $O(1)$ 平均になる。  
+ただし最悪 $O(N)$ になる場合があるため、ハック対策が必要な場合は要注意。
 
 ```cpp
 unordered_map<int, int> mp;

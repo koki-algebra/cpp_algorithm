@@ -44,7 +44,7 @@ long long sub(long long a, long long b) {
 
 ### 問題
 
-$a^n \bmod m$ を O(log n) で計算する。
+$a^n \bmod m$ を $O(\log n)$ で計算する。
 
 ### 仕組み
 
@@ -78,7 +78,7 @@ long long ans = power(2, 60, MOD); // 2^60 mod (10^9+7)
 
 ### GCD（最大公約数）
 
-ユークリッドの互除法を使うと O(log min(a, b)) で求まる。
+ユークリッドの互除法を使うと $O(\log \min(a, b))$ で求まる。
 
 $$
 \gcd(a, b) = \gcd(b, a \bmod b)
@@ -112,7 +112,7 @@ long long lcm(long long a, long long b) {
 
 ## 6-4. 素数
 
-### 判定：O(√N)
+### 判定：$O(\sqrt{N})$
 
 ```cpp
 bool is_prime(long long n) {
@@ -124,7 +124,7 @@ bool is_prime(long long n) {
 }
 ```
 
-### エラトステネスの篩：O(N log log N)
+### エラトステネスの篩：$O(N \log \log N)$
 
 N 以下のすべての素数を列挙する。
 
@@ -147,7 +147,7 @@ auto primes = sieve(1000000);
 // primes[p] == true なら p は素数
 ```
 
-### 素因数分解：O(√N)
+### 素因数分解：$O(\sqrt{N})$
 
 ```cpp
 vector<pair<long long, int>> factorize(long long n) {
@@ -224,7 +224,7 @@ int main() {
 
 ### 約数の個数
 
-$N$ の約数の個数は平均的に O(log N)、最悪でも $N^{0.3}$ 程度。
+$N$ の約数の個数は平均的に $O(\log N)$、最悪でも $N^{0.3}$ 程度。
 
 ```cpp
 vector<int> divisors(int n) {
@@ -268,7 +268,7 @@ rep(bit, 1 << n) {
 
 | テーマ | 計算量 | 使う場面 |
 | --- | --- | --- |
-| mod 演算 | O(1) | 答えが大きくなる問題 |
+| mod 演算 | $O(1)$ | 答えが大きくなる問題 |
 | 繰り返し二乗法 | $O(\log n)$ | $a^n \bmod m$ |
 | GCD | $O(\log \min(a,b))$ | 公約数・公倍数 |
 | 素数判定 | $O(\sqrt{N})$ | 単一の素数判定 |
