@@ -19,7 +19,41 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll n, m;
+    cin >> n >> m;
+    priority_queue<ll, vl, greater<ll>> pq;
+    rep(i, n) {
+        ll a;
+        cin >> a;
+        pq.push(a);
+    }
 
+    vector<pll> ops(m);
+    rep(i, m) {
+        ll b, c;
+        cin >> b >> c;
+        ops[i] = make_pair(c, b);
+    }
+    sort(rall(ops));
+
+    for (auto [c, b] : ops) {
+        rep(j, b) {
+            if (pq.empty() || pq.top() >= c) break;
+            pq.pop();
+            pq.push(c);
+        }
+    }
+
+    vl vals;
+    while (!pq.empty()) {
+        vals.push_back(pq.top());
+        pq.pop();
+    }
+    sort(rall(vals));
+
+    ll ans = 0;
+    rep(i, n) ans += vals[i];
+    cout << ans << "\n";
 
     return 0;
 }
