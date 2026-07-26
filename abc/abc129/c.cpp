@@ -19,7 +19,29 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll n, m;
+    cin >> n >> m;
+    set<ll> a;
+    rep(i, m) {
+        ll v;
+        cin >> v;
+        a.insert(v);
+    }
 
+    vl dp(n + 1);
+    dp[0] = 1;
+    rep(i, n + 1) {
+        if (a.count(i)) continue;
+        if (i >= 1 && !a.count(i - 1)) {
+            dp[i] += dp[i - 1];
+            dp[i] %= MOD;
+        }
+        if (i >= 2 && !a.count(i - 2)) {
+            dp[i] += dp[i - 2];
+            dp[i] %= MOD;
+        }
+    }
+    cout << dp[n] << "\n";
 
     return 0;
 }
