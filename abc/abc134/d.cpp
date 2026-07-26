@@ -26,9 +26,9 @@ int main() {
 
     vl x(n + 1, 0);
     for (ll i = n; i >= 1; i--) {
-        ll sum = a[i];
-        for (ll j = i * 2; j <= n; j += i) sum += x[j];
-        x[i] = sum % 2;
+        ll sum = 0;
+        for (ll j = 2 * i; j <= n; j += i) sum ^= x[j];
+        x[i] = a[i] ^ sum;
     }
 
     vl b;
