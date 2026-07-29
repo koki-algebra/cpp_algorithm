@@ -19,7 +19,24 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll n;
+    cin >> n;
+    vector<pll> a(n);
+    rep(i, n) {
+        ll v;
+        cin >> v;
+        a[i] = {i, v};
+    }
+    stable_sort(all(a), [](const pll& a, const pll& b) { return a.second > b.second; });
 
+    rep(i, n) {
+        for (auto p : a) {
+            if (p.first != i) {
+                cout << p.second << "\n";
+                break;
+            };
+        }
+    }
 
     return 0;
 }
