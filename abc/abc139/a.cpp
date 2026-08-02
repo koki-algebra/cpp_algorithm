@@ -19,7 +19,13 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-
+    string s, t;
+    cin >> s >> t;
+    ll ans = 0;
+    rep(i, 3) {
+        if (s[i] == t[i]) ans++;
+    }
+    cout << ans << "\n";
 
     return 0;
 }
