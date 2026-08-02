@@ -19,7 +19,21 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll n;
+    cin >> n;
+    vl h(n + 1, INF);
+    rep(i, n) cin >> h[i];
 
+    ll cnt = 0, ans = 0;
+    rep(i, n) {
+        if (h[i] >= h[i + 1]) {
+            cnt++;
+        } else {
+            ans = max(ans, cnt);
+            cnt = 0;
+        }
+    }
+    cout << ans << "\n";
 
     return 0;
 }
