@@ -19,7 +19,16 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    ll a, b;
+    cin >> a >> b;
 
+    ll ans = 0;
+    ll cnt = 1;
+    while (cnt < b) {
+        ans++;
+        cnt += a - 1;
+    }
+    cout << ans << "\n";
 
     return 0;
 }
